@@ -1,6 +1,7 @@
 # ConfDB
 
-Projet 
+Projet
+
 - 1- les profils
 - 2- les compos
 - 3- les versions des compos (la publication)

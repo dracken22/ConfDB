@@ -1,30 +1,27 @@
 <?php
-namespace com\confdb\label\dao;
+namespace com\confdb\game\basics\dao;
 
 use com\confdb\base\dao\ADao;
 use com\confdb\base\tool\SqlTool;
-use com\confdb\label\tool\LabelFactory;
+use com\confdb\game\basics\tool\RankFactory;
 
-class LabelDao extends ADao{
+class RankDao extends ADao{
     protected function getFactory(){
-        return LabelFactory::getInstance();
+        return RankFactory::getInstance();
     }
 
-    public function create($labels){
+    public function create($labels, $level){
         $connectionNumber = SqlTool::startTransaction();
         $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
         foreach($labels as $language_id => $text){
             SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
         }
+        $rank_id = SqlTool::insert('INSERT INTO ranks(_label, level) VALUES(?,?)', [$label_id, $level], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
-        return $label_id;
-    }
-
-    public function read($id){
-        return $this->_getById('SELECT * FROM labels JOIN labels_languages ON id = _label WHERE id = ?', [$id]);
+        return $rank_id;
     }
 
     public function list(){
-        return $this->_get('SELECT * FROM labels JOIN labels_languages ON id = _label');
+        return $this->_get('SELECT * FROM ranks JOIN labels_languages ON ranks._label = labels_languages._label');
     }
 }

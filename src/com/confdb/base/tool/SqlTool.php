@@ -17,10 +17,8 @@ class SqlTool{
     }
 
     public static function endTransaction($connectionNumber){
-        var_dump(self::$openConnections);
         self::$openConnections[$connectionNumber]->commit();
         unset(self::$openConnections[$connectionNumber]);
-        var_dump(self::$openConnections);
     }
 
     public static function execute($query, $params = null, $connectionNumber = null){

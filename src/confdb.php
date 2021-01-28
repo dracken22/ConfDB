@@ -3,6 +3,8 @@
 use com\confdb\controller\ArmylistController;
 use com\confdb\controller\LabelController;
 use com\confdb\controller\PlayerController;
+use com\confdb\controller\RankController;
+use com\confdb\controller\SkillController;
 use com\confdb\controller\UserController;
 
 function my_autoloader($class) {
@@ -14,14 +16,26 @@ spl_autoload_register('my_autoloader');
 $infos = [];
 if(isset($_GET)){
     foreach($_GET as $key => $value){
-        $infos[$key] = trim($value);
+        $infos[$key] = $value;
     }
 }
 if(isset($_POST)){
     foreach($_POST as $key => $value){
-        $infos[$key] = trim($value);
+        $infos[$key] = $value;
     }
 }
+
+function trimRecursif(&$array){
+    foreach($array as $key => &$value){
+        if(is_array($value)){
+            trimRecursif($value);
+        }
+        else{
+            trim($value);
+        }
+    }
+}
+trimRecursif($infos);
 
 $response = [];
 try{
@@ -37,6 +51,12 @@ try{
                 break;
             case 'Label':
                 $controller = new LabelController($infos);
+                break;
+            case 'Skill':
+                $controller = new SkillController($infos);
+                break;
+            case 'Rank':
+                $controller = new RankController($infos);
                 break;
             case 'Armylist':
                 $controller = new ArmylistController($infos);

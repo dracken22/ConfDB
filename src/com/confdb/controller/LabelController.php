@@ -2,18 +2,25 @@
 
 namespace com\confdb\controller;
 
-use com\confdb\armylist\dao\ArmylistDao;
+use com\confdb\label\dao\LabelDao;
+use com\confdb\label\dao\LanguageDao;
+use com\confdb\label\tool\LabelFactory;
+use com\confdb\label\tool\LanguageFactory;
 use Exception;
 
 class LabelController extends AController{
     protected function resolveActions(&$response, $action){
         switch($action){
-            case 'create' :
-                $response['id'] = ArmylistDao::create($this->getMandatoryParam('army_id'), $this->getMandatoryParam('name'),
-                        $this->getParam('description'), $this->getMandatoryParam('language_id'), $this->getMandatoryParam('player_id'));
+            case 'list_languages' :
+                $response['languages'] = LanguageFactory::getInstance()->beansToJson(LanguageDao::getInstance()->list());
                 break;
-            case 'read' :
-                // $response['player'] = ArmylistDao::read($this->getMandatoryParam('id'));
+            case 'list' :
+                $response['labels'] = LabelFactory::getInstance()->beansToJson(LabelDao::getInstance()->list());
+                break;
+            case 'create' :
+                /* Params : labels, tableau indexé de labels, avec pour clés les language_id */
+                $labels = $this->getMandatoryParam('labels');
+                $response['id'] = LabelDao::getInstance()->create($labels);
                 break;
             default :
                 throw new Exception("L'action demandée n'existe pas !");

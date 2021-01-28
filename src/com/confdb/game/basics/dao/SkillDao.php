@@ -1,13 +1,13 @@
 <?php
-namespace com\confdb\label\dao;
+namespace com\confdb\game\basics\dao;
 
 use com\confdb\base\dao\ADao;
 use com\confdb\base\tool\SqlTool;
-use com\confdb\label\tool\LabelFactory;
+use com\confdb\game\basics\tool\SkillFactory;
 
-class LabelDao extends ADao{
+class SkillDao extends ADao{
     protected function getFactory(){
-        return LabelFactory::getInstance();
+        return SkillFactory::getInstance();
     }
 
     public function create($labels){
@@ -16,15 +16,16 @@ class LabelDao extends ADao{
         foreach($labels as $language_id => $text){
             SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
         }
+        $skill_id = SqlTool::insert('INSERT INTO skills(_name) VALUES(?)', [$label_id], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
-        return $label_id;
+        return $skill_id;
     }
 
     public function read($id){
-        return $this->_getById('SELECT * FROM labels JOIN labels_languages ON id = _label WHERE id = ?', [$id]);
+        return $this->_getById('SELECT * FROM skills JOIN labels_languages ON _name = _label WHERE id = ?', [$id]);
     }
 
     public function list(){
-        return $this->_get('SELECT * FROM labels JOIN labels_languages ON id = _label');
+        return $this->_get('SELECT * FROM skills JOIN labels_languages ON _name = _label');
     }
 }

@@ -5,19 +5,30 @@ use com\confdb\base\tool\SqlTool;
 use Exception;
 
 abstract class ADao{
-    protected static function getById($query, $params){
-        $results = SqlTool::read($query, $params);
-        switch(sizeof($results)){
-            case 0;
-                throw new Exception("No result given for id : ".$params[0]." in query <$query>");
-                break;
-            case 1;
-                break;
-            default:
-                throw new Exception("Two results given for id : ".$params[0]." in query <$query>");
-                break;
+    protected static $instance = array();
+
+    protected function __construct() {}
+
+    abstract protected function getFactory();
+
+    final public static function getInstance(){
+        static $instances;
+        $class = get_called_class();
+        if (!isset($instances[$class]))
+        {
+            $instances[$class] = new $class();
         }
-        return $results[0];
+        return $instances[$class];
+    }
+
+    protected function _get($query, $params = null){
+        $results = SqlTool::read($query, $params);
+        return $this->getFactory()->resultsToBeans($results, false);
+    }
+
+    protected function _getById($query, $params){
+        $results = SqlTool::read($query, $params);
+        return $this->getFactory()->resultsToBeans($results, true);
     }
 }
 

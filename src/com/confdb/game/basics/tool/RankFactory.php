@@ -20,12 +20,4 @@ class RankFactory extends AFactory{
         }
         return $ranks;
     }
-
-    public function beanToJson($bean){
-        return [
-            'id' => $bean->getId(),
-            'labels' => $bean->getLabels(),
-            'level' => $bean->getLevel()
-        ];
-    }
 }

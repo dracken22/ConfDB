@@ -19,11 +19,4 @@ class LabelFactory extends AFactory{
         }
         return $labels;
     }
-
-    public function beanToJson($bean){
-        return [
-            'id' => $bean->getId(),
-            'labels' => $bean->getLabels()
-        ];
-    }
 }

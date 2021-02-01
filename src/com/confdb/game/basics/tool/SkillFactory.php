@@ -19,11 +19,4 @@ class SkillFactory extends AFactory{
         }
         return $skills;
     }
-
-    public function beanToJson($bean){
-        return [
-            'id' => $bean->getId(),
-            'skills' => $bean->getLabels()
-        ];
-    }
 }

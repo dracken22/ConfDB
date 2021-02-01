@@ -1,27 +1,27 @@
 <?php
-namespace com\confdb\game\basics\dao;
+namespace com\confdb\game\armies\dao;
 
 use com\confdb\base\dao\ADao;
 use com\confdb\base\tool\SqlTool;
-use com\confdb\game\basics\tool\RankFactory;
+use com\confdb\label\tool\LabelFactory;
 
-class RankDao extends ADao{
+class AllianceDao extends ADao{
     protected function getFactory(){
-        return RankFactory::getInstance();
+        return LabelFactory::getInstance();
     }
 
-    public function create($labels, $level){
+    public function create($labels){
         $connectionNumber = SqlTool::startTransaction();
         $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
         foreach($labels as $language_id => $text){
             SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
         }
-        SqlTool::insert('INSERT INTO ranks(_label, level) VALUES(?,?)', [$label_id, $level], $connectionNumber);
+        SqlTool::insert('INSERT INTO alliances(_label) VALUES(?)', [$label_id], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
         return $label_id;
     }
 
     public function list(){
-        return $this->_get('SELECT ranks._label as id, ranks.level, labels_languages.* FROM ranks JOIN labels_languages ON ranks._label = labels_languages._label');
+        return $this->_get('SELECT alliances._label as id, labels_languages.* FROM alliances JOIN labels_languages ON alliances._label = labels_languages._label');
     }
 }

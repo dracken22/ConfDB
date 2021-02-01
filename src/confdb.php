@@ -1,5 +1,6 @@
 <?php
 
+use com\confdb\controller\ArmyController;
 use com\confdb\controller\ArmylistController;
 use com\confdb\controller\LabelController;
 use com\confdb\controller\PlayerController;
@@ -43,23 +44,11 @@ try{
     if(isset($infos['controller'])){
         $controller = null;
         switch($infos['controller']){
-            case 'Player':
-                $controller = new PlayerController($infos);
-                break;
-            case 'User':
-                $controller = new UserController($infos);
+            case 'Army':
+                $controller = new ArmyController($infos);
                 break;
             case 'Label':
                 $controller = new LabelController($infos);
-                break;
-            case 'Skill':
-                $controller = new SkillController($infos);
-                break;
-            case 'Rank':
-                $controller = new RankController($infos);
-                break;
-            case 'Armylist':
-                $controller = new ArmylistController($infos);
                 break;
             default : 
                 throw new Exception("Le controller demandé n'existe pas !");

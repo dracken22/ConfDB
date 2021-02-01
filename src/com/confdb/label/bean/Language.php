@@ -26,4 +26,13 @@ class Language extends ABean{
     public function getIcon(){
         return $this->icon;
     }
+
+    public function toJson(){
+        return [
+            'id' => $this->getId(),
+            'code' => $this->getCode(),
+            'name' => $this->getName(),
+            'icon' => $this->getIcon()
+        ];
+    }
 }

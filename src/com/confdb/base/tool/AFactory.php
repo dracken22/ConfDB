@@ -38,13 +38,4 @@ abstract class AFactory{
         }
         return $result;
     }
-
-    public abstract function beanToJson($bean);
-    public function beansToJson($beans){
-        $json = [];
-        foreach($beans as $bean){
-            $json[] = $this->beanToJson($bean);
-        }
-        return $json;
-    }
 }

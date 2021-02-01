@@ -12,4 +12,6 @@ abstract class ABean{
     public function setId($id){
         $this->id = $id;
     }
+
+    public abstract function toJson();
 }

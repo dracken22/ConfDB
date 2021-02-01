@@ -17,13 +17,4 @@ class LanguageFactory extends AFactory{
         }
         return $languages;
     }
-
-    public function beanToJson($bean){
-        return [
-            'id' => $bean->getId(),
-            'code' => $bean->getCode(),
-            'name' => $bean->getName(),
-            'icon' => $bean->getIcon()
-        ];
-    }
 }

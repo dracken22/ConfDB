@@ -19,17 +19,17 @@ abstract class AFactory{
         return $instances[$class];
     }
 
-    abstract protected function dbToBean($results, $singleResult);
+    abstract protected function dbToBean($results);
 
     public function resultsToBeans($results, $singleResult = false){
-        $result = $this->dbToBean($results, $singleResult);
+        $result = $this->dbToBean($results);
         if($singleResult){
             switch(sizeof($result)){
                 case 0 :
                     throw new Exception('One object expected, none gotten !');
                     break;
                 case 1 :
-                    $result = $result[0];
+                    $result = $result[array_keys($result)[0]];
                     break;
                 default :
                     throw new Exception('One object expected, multiple gotten !');

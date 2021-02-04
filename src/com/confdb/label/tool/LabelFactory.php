@@ -5,7 +5,7 @@ use com\confdb\base\tool\AFactory;
 use com\confdb\label\bean\Label;
 
 class LabelFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $labels = [];
         foreach($results as $result){
             if(isset($labels[$result['id']])){

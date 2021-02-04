@@ -6,6 +6,11 @@ abstract class ABusiness{
 
     protected function __construct() {}
 
+    /**
+     * getInstance
+     *
+     * @return $class an instance of the calling class
+     */
     final public static function getInstance(){
         static $instances;
         $class = get_called_class();

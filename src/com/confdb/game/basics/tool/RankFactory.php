@@ -5,7 +5,7 @@ use com\confdb\base\tool\AFactory;
 use com\confdb\game\basics\bean\Rank;
 
 class RankFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $ranks = [];
         foreach($results as $result){
             if(isset($ranks[$result['id']])){

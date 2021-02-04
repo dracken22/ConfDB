@@ -1,13 +1,12 @@
 <?php
-namespace com\confdb\game\basics\tool;
+namespace com\confdb\game\cards\tool;
 
 use com\confdb\base\tool\AFactory;
-use com\confdb\game\basics\bean\Size;
 
-class SizeFactory extends AFactory{
+class FighterFactory extends AFactory{
     public function dbToBean($results){
-        $sizes = [];
-        foreach($results as $result){
+        $fighters = [];
+        /*foreach($results as $result){
             if(isset($sizes[$result['id']])){
                 $size = $sizes[$result['id']];
             }
@@ -17,7 +16,7 @@ class SizeFactory extends AFactory{
             }
             $size->addLabel($result['_language'], $result['text']);
             $size->setPotency($result['potency']);
-        }
-        return $sizes;
+        }*/
+        return $fighters;
     }
 }

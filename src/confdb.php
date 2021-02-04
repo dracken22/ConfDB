@@ -1,5 +1,6 @@
 <?php
 
+use com\confdb\controller\AbilityController;
 use com\confdb\controller\ArmyController;
 use com\confdb\controller\ArmylistController;
 use com\confdb\controller\LabelController;
@@ -49,6 +50,9 @@ try{
                 break;
             case 'Label':
                 $controller = new LabelController($infos);
+                break;
+            case 'Ability':
+                $controller = new AbilityController($infos);
                 break;
             default : 
                 throw new Exception("Le controller demandé n'existe pas !");

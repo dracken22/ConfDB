@@ -6,7 +6,7 @@ use com\confdb\game\armies\bean\Alliance;
 use com\confdb\game\armies\bean\Army;
 
 class ArmyFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $armies = [];
         foreach($results as $result){
             if(isset($armies[$result['id']])){

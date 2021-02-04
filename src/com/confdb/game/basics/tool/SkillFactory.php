@@ -5,7 +5,7 @@ use com\confdb\base\tool\AFactory;
 use com\confdb\game\basics\bean\Skill;
 
 class SkillFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $skills = [];
         foreach($results as $result){
             if(isset($skills[$result['id']])){

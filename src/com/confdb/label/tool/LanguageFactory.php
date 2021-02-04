@@ -5,7 +5,7 @@ use com\confdb\base\tool\AFactory;
 use com\confdb\label\bean\Language;
 
 class LanguageFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $languages = [];
         foreach($results as $result){
             $language = new Language();

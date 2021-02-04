@@ -5,7 +5,7 @@ use com\confdb\base\tool\AFactory;
 use com\confdb\game\basics\bean\Pedestal;
 
 class PedestalFactory extends AFactory{
-    public function dbToBean($results, $singleResult){
+    public function dbToBean($results){
         $pedestals = [];
         foreach($results as $result){
             if(isset($pedestals[$result['id']])){

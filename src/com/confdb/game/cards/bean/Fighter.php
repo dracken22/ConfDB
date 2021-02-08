@@ -17,6 +17,7 @@ class Fighter extends Card{
     private Label $gender;
     private $skills = [];
     private $abilities = [];
+    private $rangedWeapons = [];
     private $classes = [];
 
     /**
@@ -154,7 +155,23 @@ class Fighter extends Card{
      */
     public function getClasses(){
         return $this->classes;
+    }      
+    /**
+     * getRangedWeapons
+     *
+     * @return array[RangedWeapon]
+     */
+    public function getRangedWeapons(){
+        return $this->rangedWeapons;
     }    
+    /**
+     * addRangedWeapon
+     *
+     * @param  RangedWeapon $ranged_weapon
+     */
+    public function addRangedWeapon($ranged_weapon){
+        $this->rangedWeapons[] = $ranged_weapon;
+    }
     /**
      * addClass
      *
@@ -162,7 +179,7 @@ class Fighter extends Card{
      */
     public function addClass($class){
         $this->classes[] = $class;
-    }
+    }  
     
 
     public function toJson(){
@@ -180,6 +197,10 @@ class Fighter extends Card{
         $json['abilities'] = [];
         foreach($this->getAbilities() as $ability){
             $json['abilities'][] = $ability->toJson();
+        }
+        $json['ranged_weapons'] = [];
+        foreach($this->getRangedWeapons() as $ranged_weapon){
+            $json['ranged_weapons'][] = $ranged_weapon->toJson();
         }
         $json['classes'] = [];
         foreach($this->getClasses() as $class){

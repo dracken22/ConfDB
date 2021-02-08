@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 08 fév. 2021 à 01:39
+-- Généré le : mar. 09 fév. 2021 à 00:03
 -- Version du serveur :  10.4.17-MariaDB
 -- Version de PHP : 8.0.1
 
@@ -180,7 +180,7 @@ CREATE TABLE `card_fighters` (
 CREATE TABLE `card_fighters_abilities` (
   `_card_fighter` int(11) NOT NULL,
   `_ability` int(11) NOT NULL,
-  `valeur` text DEFAULT NULL
+  `value` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Compétences associées à un combattant';
 
 -- --------------------------------------------------------
@@ -328,7 +328,8 @@ CREATE TABLE `fighter_options` (
 
 CREATE TABLE `fighter_options_abilities` (
   `_fighter_option` int(11) NOT NULL,
-  `_ability` int(11) NOT NULL
+  `_ability` int(11) NOT NULL,
+  `value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -385,7 +386,7 @@ CREATE TABLE `fighter_options_skills` (
 CREATE TABLE `fighter_option_groups` (
   `id` int(11) NOT NULL,
   `_card_fighter` int(11) NOT NULL,
-  `can_be_empty` tinyint(1) NOT NULL DEFAULT 0
+  `mandatory` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

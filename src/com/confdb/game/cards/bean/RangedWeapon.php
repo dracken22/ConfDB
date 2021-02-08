@@ -122,7 +122,7 @@ class RangedWeapon extends ABean{
     /**
      * isPiercing
      *
-     * @return boolean
+     * @return bool
      */
     public function isPiercing(){
         return $this->piercing;
@@ -130,7 +130,7 @@ class RangedWeapon extends ABean{
     /**
      * setPiercing
      *
-     * @param  boolean $piercing
+     * @param  bool $piercing
      */
     public function setPiercing($piercing){
         $this->piercing = $piercing;
@@ -138,7 +138,7 @@ class RangedWeapon extends ABean{
     /**
      * isSplash
      *
-     * @return boolean
+     * @return bool
      */
     public function isSplash(){
         return $this->splash;
@@ -146,7 +146,7 @@ class RangedWeapon extends ABean{
     /**
      * setSplash
      *
-     * @param  boolean $splash
+     * @param  bool $splash
      */
     public function setSplash($splash){
         $this->splash = $splash;
@@ -154,7 +154,7 @@ class RangedWeapon extends ABean{
     /**
      * isHeavy
      *
-     * @return boolean
+     * @return bool
      */
     public function isHeavy(){
         return $this->heavy;
@@ -162,7 +162,7 @@ class RangedWeapon extends ABean{
     /**
      * setHeavy
      *
-     * @param  boolean $heavy
+     * @param  bool $heavy
      */
     public function setHeavy($heavy){
         $this->heavy = $heavy;

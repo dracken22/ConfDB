@@ -12,10 +12,7 @@ class AllianceDao extends ADao{
 
     public function create($labels){
         $connectionNumber = SqlTool::startTransaction();
-        $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
-        foreach($labels as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
-        }
+        $label_id = $this->insertLabel($connectionNumber, $labels);
         SqlTool::insert('INSERT INTO alliances(_label) VALUES(?)', [$label_id], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
         return $label_id;

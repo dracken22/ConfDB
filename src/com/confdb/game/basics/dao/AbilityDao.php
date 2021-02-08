@@ -10,41 +10,49 @@ class AbilityDao extends ADao{
         return AbilityFactory::getInstance();
     }
 
-    public function create($names, $descriptions){
+    public function create($names, $descriptions, $has_value){
         $connectionNumber = SqlTool::startTransaction();
-        $name_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
-        foreach($names as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$name_id, $language_id, $text], $connectionNumber);
-        }
-        $description_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
-        foreach($descriptions as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$description_id, $language_id, $text], $connectionNumber);
-        }
-        $ability_id = SqlTool::insert('INSERT INTO abilities(_name, _rule) VALUES(?,?)', [$name_id, $description_id], $connectionNumber);
+        $name_id = $this->insertLabel($connectionNumber, $names);
+        $description_id = $this->insertLabel($connectionNumber, $descriptions);
+        $ability_id = SqlTool::insert('INSERT INTO abilities(_name, _rule, has_value) VALUES(?,?,?)', [$name_id, $description_id, $has_value], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
         return $ability_id;
     }
 
+    public function update($id, $names, $descriptions, $has_value){
+        $connectionNumber = SqlTool::startTransaction();
+        $ability = $this->_getById('SELECT id, _name, _rule, has_value FROM abilities WHERE id = ?', [$id]);
+        SqlTool::execute('UPDATE abilities SET has_value = ? WHERE id = ?', [$has_value, $id], $connectionNumber);
+        foreach($names as $language_id => $text){
+            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)
+                                ON DUPLICATE KEY text = ?', [$ability['_name'], $language_id, $text, $text], $connectionNumber);
+        }
+        foreach($descriptions as $language_id => $text){
+            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)
+                                ON DUPLICATE KEY text = ?', [$ability['_rule'], $language_id, $text, $text], $connectionNumber);
+        }
+        SqlTool::endTransaction($connectionNumber);
+    }
+
     public function read($ability_id){
-        return $this->_getById('SELECT abilities.id,
-                                names.text AS name,
-                                names._language AS name_language,
-                                descriptions.text AS description,
-                                descriptions._language AS description_language
-                            FROM abilities
-                            JOIN labels_languages AS names ON abilities._name = names._label
-                            JOIN labels_languages AS descriptions ON abilities._rule = descriptions._label
-                            WHERE abilities.id = ?', [$ability_id]);
+        return $this->_getById($this->getBaseSelect() . 'WHERE abilities.id = ?', [$ability_id]);
     }
 
     public function list(){
-        return $this->_get('SELECT abilities.id,
-                                names.text AS name,
-                                names._language AS name_language,
-                                descriptions.text AS description,
-                                descriptions._language AS description_language
-                            FROM abilities
-                            JOIN labels_languages AS names ON abilities._name = names._label
-                            JOIN labels_languages AS descriptions ON abilities._rule = descriptions._label');
+        return $this->_get($this->getBaseSelect());
+    }
+
+    private function getBaseSelect(){
+        return 'SELECT abilities.id,
+                        _name,
+                        _rule,
+                        has_value,
+                        names.text AS name,
+                        names._language AS name_language,
+                        descriptions.text AS description,
+                        descriptions._language AS description_language
+                    FROM abilities
+                    JOIN labels_languages AS names ON abilities._name = names._label
+                    JOIN labels_languages AS descriptions ON abilities._rule = descriptions._label';
     }
 }

@@ -24,7 +24,10 @@ class AbilityController extends AController{
                 $response['ability'] = $this->getBusiness()->read($this->getMandatoryParam('ability_id'));
                 break;
             case 'create' :
-                $response['ability_id'] = $this->getBusiness()->create($this->getMandatoryParam('names'), $this->getMandatoryParam('descriptions'));
+                $response['ability_id'] = $this->getBusiness()->create($this->getMandatoryParam('names'), $this->getMandatoryParam('descriptions'), $this->getParam('has_value'));
+                break;
+            case 'update' :
+                $this->getBusiness()->update($this->getMandatoryParam('id'), $this->getMandatoryParam('names'), $this->getMandatoryParam('descriptions'), $this->getParam('has_value'));
                 break;
             default :
                 throw new Exception("L'action demandée n'existe pas !");

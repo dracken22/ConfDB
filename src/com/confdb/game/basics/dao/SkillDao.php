@@ -12,10 +12,7 @@ class SkillDao extends ADao{
 
     public function create($labels){
         $connectionNumber = SqlTool::startTransaction();
-        $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
-        foreach($labels as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
-        }
+        $label_id = $this->insertLabel($connectionNumber, $labels);
         $skill_id = SqlTool::insert('INSERT INTO skills(_name) VALUES(?)', [$label_id], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
         return $skill_id;

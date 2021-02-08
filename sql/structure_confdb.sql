@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 01 fév. 2021 à 03:35
+-- Généré le : lun. 08 fév. 2021 à 01:39
 -- Version du serveur :  10.4.17-MariaDB
 -- Version de PHP : 8.0.1
 
@@ -32,7 +32,8 @@ USE `confdb`;
 CREATE TABLE `abilities` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL,
-  `_rule` int(11) NOT NULL
+  `_rule` int(11) NOT NULL,
+  `has_value` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Les compétences du jeu (bravoure, possédé) et la règle de cette compétence, traduite.';
 
 -- --------------------------------------------------------
@@ -178,7 +179,8 @@ CREATE TABLE `card_fighters` (
 
 CREATE TABLE `card_fighters_abilities` (
   `_card_fighter` int(11) NOT NULL,
-  `_ability` int(11) NOT NULL
+  `_ability` int(11) NOT NULL,
+  `valeur` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Compétences associées à un combattant';
 
 -- --------------------------------------------------------
@@ -302,7 +304,7 @@ CREATE TABLE `champions` (
 --
 
 CREATE TABLE `classes` (
-  `_name` int(11) NOT NULL
+  `_label` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Classes de combattants (formor, paladins,...)';
 
 -- --------------------------------------------------------
@@ -632,8 +634,9 @@ CREATE TABLE `races` (
 
 CREATE TABLE `ranged_weapons` (
   `id` int(11) NOT NULL,
+  `_name` int(11) NOT NULL,
   `accuracy` int(11) NOT NULL,
-  `weapon_strenght` int(11) NOT NULL,
+  `weapon_strength` int(11) NOT NULL,
   `short_range` int(11) DEFAULT NULL,
   `medium_range` int(11) DEFAULT NULL,
   `long_range` int(11) DEFAULT NULL,
@@ -919,7 +922,7 @@ ALTER TABLE `champions`
 -- Index pour la table `classes`
 --
 ALTER TABLE `classes`
-  ADD PRIMARY KEY (`_name`);
+  ADD PRIMARY KEY (`_label`);
 
 --
 -- Index pour la table `fighter_options`
@@ -1116,7 +1119,8 @@ ALTER TABLE `races`
 -- Index pour la table `ranged_weapons`
 --
 ALTER TABLE `ranged_weapons`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ranged_weapon_name` (`_name`);
 
 --
 -- Index pour la table `ranks`
@@ -1432,7 +1436,7 @@ ALTER TABLE `card_fighters_abilities`
 -- Contraintes pour la table `card_fighters_classes`
 --
 ALTER TABLE `card_fighters_classes`
-  ADD CONSTRAINT `fighterclass_class` FOREIGN KEY (`_class`) REFERENCES `classes` (`_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fighterclass_class` FOREIGN KEY (`_class`) REFERENCES `classes` (`_label`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fighterclass_fighter` FOREIGN KEY (`_card_fighter`) REFERENCES `card_fighters` (`_card`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -1496,6 +1500,12 @@ ALTER TABLE `card_miracles`
 --
 ALTER TABLE `champions`
   ADD CONSTRAINT `champion_name` FOREIGN KEY (`_name`) REFERENCES `labels` (`id`);
+
+--
+-- Contraintes pour la table `classes`
+--
+ALTER TABLE `classes`
+  ADD CONSTRAINT `fk_classes_label` FOREIGN KEY (`_label`) REFERENCES `labels` (`id`);
 
 --
 -- Contraintes pour la table `fighter_options`
@@ -1654,6 +1664,12 @@ ALTER TABLE `priests_miracle_ways`
 --
 ALTER TABLE `races`
   ADD CONSTRAINT `race_label` FOREIGN KEY (`_name`) REFERENCES `labels` (`id`);
+
+--
+-- Contraintes pour la table `ranged_weapons`
+--
+ALTER TABLE `ranged_weapons`
+  ADD CONSTRAINT `ranged_weapon_name` FOREIGN KEY (`_name`) REFERENCES `labels` (`id`);
 
 --
 -- Contraintes pour la table `ranks`

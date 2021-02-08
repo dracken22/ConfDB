@@ -12,10 +12,7 @@ class PedestalDao extends ADao{
 
     public function create($labels, $dimensions){
         $connectionNumber = SqlTool::startTransaction();
-        $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
-        foreach($labels as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
-        }
+        $label_id = $this->insertLabel($connectionNumber, $labels);
         SqlTool::insert('INSERT INTO pedestals(_label, dimensions) VALUES(?,?)', [$label_id, $dimensions], $connectionNumber);
         SqlTool::endTransaction($connectionNumber);
         return $label_id;

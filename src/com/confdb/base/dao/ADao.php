@@ -30,5 +30,13 @@ abstract class ADao{
         $results = SqlTool::read($query, $params);
         return $this->getFactory()->resultsToBeans($results, true);
     }
+
+    protected function insertLabel($connectionNumber, $labels){
+        $label_id = SqlTool::insert('INSERT INTO labels VALUES()', null, $connectionNumber);
+        foreach($labels as $language_id => $text){
+            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
+        }
+        return $label_id;
+    }
 }
 

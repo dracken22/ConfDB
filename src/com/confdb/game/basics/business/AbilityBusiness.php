@@ -28,10 +28,23 @@ class AbilityBusiness extends ABusiness{
      * create
      *
      * @param  array $names language_id as key
-     * @param  mixed $descriptions language_id as key
-     * @return void
+     * @param  array $descriptions language_id as key
+     * @param  boolean $has_value si la compétence a un paramètre
+     * @return int id
      */
-    public function create($names, $descriptions){
-        return $this->getDao()->create($names, $descriptions);
+    public function create($names, $descriptions, $has_value = false){
+        return $this->getDao()->create($names, $descriptions, $has_value);
+    }
+        
+    /**
+     * update
+     *
+     * @param  int $id
+     * @param  array $names language_id as key
+     * @param  array $descriptions language_id as key
+     * @param  boolean $has_value si la compétence a un paramètre
+     */
+    public function update($id, $names, $descriptions, $has_value = false){
+        $this->getDao()->update($id, $names, $descriptions, $has_value);
     }
 }

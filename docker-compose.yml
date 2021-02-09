@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: confdb
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'confdb'
+      MYSQL_USER: 'confdb'
+      MYSQL_PASSWORD: 'devdev'
+      MYSQL_ROOT_PASSWORD: 'devdev'
+    ports:
+      - '3406:3306'
+    expose:
+      - '3406'
+    volumes:
+      - confdb-data:/var/lib/mysql
+      - ./sql/structure_confdb.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma_confdb
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3406
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8082:80
+  php:
+    build: docker-php
+    ports:
+      - 8083:80
+    expose:
+      - 8083
+    volumes:
+      - ./src:/var/www/html/
+volumes:
+  confdb-data:

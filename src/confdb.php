@@ -10,7 +10,8 @@ use com\confdb\controller\SkillController;
 use com\confdb\controller\UserController;
 
 function my_autoloader($class) {
-    include $class . '.php';
+    $finalPath = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    include realpath(dirname(__FILE__)). '/' .$finalPath . '.php';
 }
 
 spl_autoload_register('my_autoloader');

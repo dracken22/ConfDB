@@ -1,4 +1,11 @@
 <template>
+  <el-menu :default-active="1" mode="horizontal" router="true">
+    <el-submenu index="1">
+      <template #title>Administrations</template>
+      <el-menu-item index="1-1" route="/ability">Compétences</el-menu-item>
+      <el-menu-item index="1-2" route="/army">Armées</el-menu-item>
+    </el-submenu>
+  </el-menu>
   <router-view></router-view>
 </template>
 

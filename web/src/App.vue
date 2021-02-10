@@ -1,9 +1,10 @@
 <template>
-  <AbilityList></AbilityList>
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+
 import AbilityList from './components/ability/AbilityList.vue';
 
 export default defineComponent({

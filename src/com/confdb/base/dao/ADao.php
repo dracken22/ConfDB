@@ -21,14 +21,20 @@ abstract class ADao{
         return $instances[$class];
     }
 
-    protected function _get($query, $params = null){
+    private function _dbRead($singleResult, $query, $params = null, $factory = null){
         $results = SqlTool::read($query, $params);
-        return $this->getFactory()->resultsToBeans($results, false);
+        if($factory == null){
+            $factory = $this->getFactory();
+        }
+        return $factory->resultsToBeans($results, $singleResult);
     }
 
-    protected function _getById($query, $params){
-        $results = SqlTool::read($query, $params);
-        return $this->getFactory()->resultsToBeans($results, true);
+    protected function _get($query, $params = null, $factory = null){
+        return $this->_dbRead(false, $query, $params, $factory);
+    }
+
+    protected function _getById($query, $params, $factory = null){
+        return $this->_dbRead(true, $query, $params, $factory);
     }
 
     protected function insertLabel($connectionNumber, $labels){
@@ -37,6 +43,13 @@ abstract class ADao{
             SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)', [$label_id, $language_id, $text], $connectionNumber);
         }
         return $label_id;
+    }
+
+    protected function updateLabel($connectionNumber, $label_id, $labels){
+        foreach($labels as $language_id => $text){
+            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)
+                                ON DUPLICATE KEY text = ?', [$label_id, $language_id, $text, $text], $connectionNumber);
+        }
     }
 }
 

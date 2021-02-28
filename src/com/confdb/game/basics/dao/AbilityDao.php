@@ -23,14 +23,8 @@ class AbilityDao extends ADao{
         $connectionNumber = SqlTool::startTransaction();
         $ability = $this->_getById('SELECT id, _name, _rule, has_value FROM abilities WHERE id = ?', [$id]);
         SqlTool::execute('UPDATE abilities SET has_value = ? WHERE id = ?', [$has_value, $id], $connectionNumber);
-        foreach($names as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)
-                                ON DUPLICATE KEY text = ?', [$ability['_name'], $language_id, $text, $text], $connectionNumber);
-        }
-        foreach($descriptions as $language_id => $text){
-            SqlTool::execute('INSERT INTO labels_languages(_label, _language, text) VALUES (?,?,?)
-                                ON DUPLICATE KEY text = ?', [$ability['_rule'], $language_id, $text, $text], $connectionNumber);
-        }
+        $this->updateLabel($connectionNumber, $ability['_name'], $names);
+        $this->updateLabel($connectionNumber, $ability['_rule'], $descriptions);
         SqlTool::endTransaction($connectionNumber);
     }
 

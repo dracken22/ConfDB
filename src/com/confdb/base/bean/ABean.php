@@ -13,5 +13,11 @@ abstract class ABean{
         $this->id = $id;
     }
 
+    public function __construct($id = null){
+        if($id != null){
+            $this->setId($id);
+        }
+    }
+
     public abstract function toJson();
 }

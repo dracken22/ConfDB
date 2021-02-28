@@ -5,7 +5,7 @@ use com\confdb\game\basics\bean\Ability;
 
 class FighterAbility extends Ability{
     private $value;
-
+    
     public function getValue(){
         return $this->value;
     }

@@ -19,6 +19,7 @@ class Fighter extends Card{
     private $abilities = [];
     private $rangedWeapons = [];
     private $classes = [];
+    private $optionGroups = [];
 
     /**
      * getArmy
@@ -180,6 +181,22 @@ class Fighter extends Card{
     public function addClass($class){
         $this->classes[] = $class;
     }  
+    /**
+     * getOptionGroups
+     *
+     * @return array[OptionGroup]
+     */
+    public function getOptionGroups(){
+        return $this->optionGroups;
+    }    
+    /**
+     * addOptionGroup
+     *
+     * @param  OptionGroup $option_group
+     */
+    public function addOptionGroup($option_group){
+        $this->optionGroups[] = $option_group;
+    }
     
 
     public function toJson(){
@@ -205,6 +222,10 @@ class Fighter extends Card{
         $json['classes'] = [];
         foreach($this->getClasses() as $class){
             $json['classes'][] = $class->toJson();
+        }
+        $json['option_groups'] = [];
+        foreach($this->getOptionGroups() as $option_group){
+            $json['option_groups'][] = $option_group->toJson();
         }
         return $json;
     }

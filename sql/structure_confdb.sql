@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 09 fév. 2021 à 00:03
+-- Généré le : Dim 28 fév. 2021 à 01:19
 -- Version du serveur :  10.4.17-MariaDB
 -- Version de PHP : 8.0.1
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `confdb`
 --
-CREATE DATABASE IF NOT EXISTS `confdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `confdb`;
 
 -- --------------------------------------------------------
 
@@ -29,6 +27,7 @@ USE `confdb`;
 -- Structure de la table `abilities`
 --
 
+DROP TABLE IF EXISTS `abilities`;
 CREATE TABLE `abilities` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL,
@@ -36,15 +35,35 @@ CREATE TABLE `abilities` (
   `has_value` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Les compétences du jeu (bravoure, possédé) et la règle de cette compétence, traduite.';
 
+--
+-- Déchargement des données de la table `abilities`
+--
+
+INSERT INTO `abilities` (`id`, `_name`, `_rule`, `has_value`) VALUES
+(1, 81, 82, 0);
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `alliances`
 --
 
+DROP TABLE IF EXISTS `alliances`;
 CREATE TABLE `alliances` (
   `_label` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Voies d''alliance (lumière, destin etc)';
+
+--
+-- Déchargement des données de la table `alliances`
+--
+
+INSERT INTO `alliances` (`_label`) VALUES
+(39),
+(40),
+(41),
+(42),
+(43),
+(80);
 
 -- --------------------------------------------------------
 
@@ -52,11 +71,54 @@ CREATE TABLE `alliances` (
 -- Structure de la table `armies`
 --
 
+DROP TABLE IF EXISTS `armies`;
 CREATE TABLE `armies` (
   `_label` int(11) NOT NULL,
   `icon` text NOT NULL,
   `_alliance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Les armées (Lions, Mid Nor, etc)';
+
+--
+-- Déchargement des données de la table `armies`
+--
+
+INSERT INTO `armies` (`_label`, `icon`, `_alliance`) VALUES
+(44, 'acheron.png', 41),
+(45, 'dirz.png', 41),
+(46, 'drunes.png', 41),
+(47, 'mid-nor.png', 41),
+(48, 'ophidian.png', 41),
+(49, 'akkyshan.png', 41),
+(50, 'vile-tis.png', 41),
+(51, 'dun-scaith.png', 41),
+(52, 'lions.png', 39),
+(53, 'cynwalls.png', 39),
+(54, 'griffins.png', 39),
+(55, 'sessairs.png', 39),
+(56, 'tir-na-bor.png', 39),
+(57, 'sphinx.png', 39),
+(58, 'daikinees.png', 40),
+(59, 'bran-o-kor.png', 40),
+(60, 'wolfen.png', 40),
+(61, 'no-dan-kar.png', 40),
+(62, 'daikinees.png', 40),
+(63, 'concordia.png', 40),
+(64, 'milice.png', 42),
+(65, 'ogrokh.png', 42),
+(66, 'architects.png', 42),
+(67, 'nochers.png', 42),
+(68, 'usury.png', 42),
+(69, 'thieves.png', 42),
+(70, 'blades.png', 42),
+(71, 'cartomanciers.png', 42),
+(72, 'orfevres.png', 42),
+(73, 'fire.png', 43),
+(74, 'water.png', 43),
+(75, 'earth.png', 43),
+(76, 'air.png', 43),
+(77, 'light.png', 43),
+(78, 'darkness.png', 43),
+(79, 'mercenaries.png', 80);
 
 -- --------------------------------------------------------
 
@@ -64,6 +126,7 @@ CREATE TABLE `armies` (
 -- Structure de la table `armylists`
 --
 
+DROP TABLE IF EXISTS `armylists`;
 CREATE TABLE `armylists` (
   `id` int(11) NOT NULL,
   `_army` int(11) NOT NULL,
@@ -79,6 +142,7 @@ CREATE TABLE `armylists` (
 -- Structure de la table `artifacts_alliances`
 --
 
+DROP TABLE IF EXISTS `artifacts_alliances`;
 CREATE TABLE `artifacts_alliances` (
   `_card_artifact` int(11) NOT NULL,
   `_alliance` int(11) NOT NULL
@@ -90,6 +154,7 @@ CREATE TABLE `artifacts_alliances` (
 -- Structure de la table `artifacts_armies`
 --
 
+DROP TABLE IF EXISTS `artifacts_armies`;
 CREATE TABLE `artifacts_armies` (
   `_card_artifact` int(11) NOT NULL,
   `_army` int(11) NOT NULL
@@ -101,6 +166,7 @@ CREATE TABLE `artifacts_armies` (
 -- Structure de la table `artifacts_champions`
 --
 
+DROP TABLE IF EXISTS `artifacts_champions`;
 CREATE TABLE `artifacts_champions` (
   `_card_artifact` int(11) NOT NULL,
   `_champion` int(11) NOT NULL
@@ -112,6 +178,7 @@ CREATE TABLE `artifacts_champions` (
 -- Structure de la table `artifacts_fighters`
 --
 
+DROP TABLE IF EXISTS `artifacts_fighters`;
 CREATE TABLE `artifacts_fighters` (
   `_card_artifact` int(11) NOT NULL,
   `_card_fighter` int(11) NOT NULL
@@ -123,6 +190,7 @@ CREATE TABLE `artifacts_fighters` (
 -- Structure de la table `artifact_types`
 --
 
+DROP TABLE IF EXISTS `artifact_types`;
 CREATE TABLE `artifact_types` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL,
@@ -135,6 +203,7 @@ CREATE TABLE `artifact_types` (
 -- Structure de la table `cards`
 --
 
+DROP TABLE IF EXISTS `cards`;
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
@@ -146,6 +215,7 @@ CREATE TABLE `cards` (
 -- Structure de la table `card_artifacts`
 --
 
+DROP TABLE IF EXISTS `card_artifacts`;
 CREATE TABLE `card_artifacts` (
   `_card` int(11) NOT NULL,
   `_point` int(11) NOT NULL,
@@ -159,6 +229,7 @@ CREATE TABLE `card_artifacts` (
 -- Structure de la table `card_fighters`
 --
 
+DROP TABLE IF EXISTS `card_fighters`;
 CREATE TABLE `card_fighters` (
   `_card` int(11) NOT NULL,
   `_army` int(11) NOT NULL,
@@ -177,6 +248,7 @@ CREATE TABLE `card_fighters` (
 -- Structure de la table `card_fighters_abilities`
 --
 
+DROP TABLE IF EXISTS `card_fighters_abilities`;
 CREATE TABLE `card_fighters_abilities` (
   `_card_fighter` int(11) NOT NULL,
   `_ability` int(11) NOT NULL,
@@ -189,6 +261,7 @@ CREATE TABLE `card_fighters_abilities` (
 -- Structure de la table `card_fighters_classes`
 --
 
+DROP TABLE IF EXISTS `card_fighters_classes`;
 CREATE TABLE `card_fighters_classes` (
   `_card_fighter` int(11) NOT NULL,
   `_class` int(11) NOT NULL
@@ -200,6 +273,7 @@ CREATE TABLE `card_fighters_classes` (
 -- Structure de la table `card_fighters_ranged_weapons`
 --
 
+DROP TABLE IF EXISTS `card_fighters_ranged_weapons`;
 CREATE TABLE `card_fighters_ranged_weapons` (
   `_card_fighter` int(11) NOT NULL,
   `_ranged_weapon` int(11) NOT NULL
@@ -211,6 +285,7 @@ CREATE TABLE `card_fighters_ranged_weapons` (
 -- Structure de la table `card_fighters_skills`
 --
 
+DROP TABLE IF EXISTS `card_fighters_skills`;
 CREATE TABLE `card_fighters_skills` (
   `_card_fighter` int(11) NOT NULL,
   `_skill` int(11) NOT NULL,
@@ -223,6 +298,7 @@ CREATE TABLE `card_fighters_skills` (
 -- Structure de la table `card_fighter_champions`
 --
 
+DROP TABLE IF EXISTS `card_fighter_champions`;
 CREATE TABLE `card_fighter_champions` (
   `_card_fighter` int(11) NOT NULL,
   `_champion` int(11) NOT NULL,
@@ -235,6 +311,7 @@ CREATE TABLE `card_fighter_champions` (
 -- Structure de la table `card_fighter_troops`
 --
 
+DROP TABLE IF EXISTS `card_fighter_troops`;
 CREATE TABLE `card_fighter_troops` (
   `_card_fighter` int(11) NOT NULL,
   `quantity_max` int(11) NOT NULL
@@ -246,6 +323,7 @@ CREATE TABLE `card_fighter_troops` (
 -- Structure de la table `card_images`
 --
 
+DROP TABLE IF EXISTS `card_images`;
 CREATE TABLE `card_images` (
   `_card` int(11) NOT NULL,
   `image` text NOT NULL
@@ -257,6 +335,7 @@ CREATE TABLE `card_images` (
 -- Structure de la table `card_magic_spells`
 --
 
+DROP TABLE IF EXISTS `card_magic_spells`;
 CREATE TABLE `card_magic_spells` (
   `_card` int(11) NOT NULL,
   `_difficulty` int(11) NOT NULL,
@@ -273,6 +352,7 @@ CREATE TABLE `card_magic_spells` (
 -- Structure de la table `card_miracles`
 --
 
+DROP TABLE IF EXISTS `card_miracles`;
 CREATE TABLE `card_miracles` (
   `_card` int(11) NOT NULL,
   `creation` int(11) NOT NULL,
@@ -292,6 +372,7 @@ CREATE TABLE `card_miracles` (
 -- Structure de la table `champions`
 --
 
+DROP TABLE IF EXISTS `champions`;
 CREATE TABLE `champions` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
@@ -303,6 +384,7 @@ CREATE TABLE `champions` (
 -- Structure de la table `classes`
 --
 
+DROP TABLE IF EXISTS `classes`;
 CREATE TABLE `classes` (
   `_label` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Classes de combattants (formor, paladins,...)';
@@ -313,6 +395,7 @@ CREATE TABLE `classes` (
 -- Structure de la table `fighter_options`
 --
 
+DROP TABLE IF EXISTS `fighter_options`;
 CREATE TABLE `fighter_options` (
   `id` int(11) NOT NULL,
   `_label` int(11) NOT NULL,
@@ -326,6 +409,7 @@ CREATE TABLE `fighter_options` (
 -- Structure de la table `fighter_options_abilities`
 --
 
+DROP TABLE IF EXISTS `fighter_options_abilities`;
 CREATE TABLE `fighter_options_abilities` (
   `_fighter_option` int(11) NOT NULL,
   `_ability` int(11) NOT NULL,
@@ -338,6 +422,7 @@ CREATE TABLE `fighter_options_abilities` (
 -- Structure de la table `fighter_options_magicians`
 --
 
+DROP TABLE IF EXISTS `fighter_options_magicians`;
 CREATE TABLE `fighter_options_magicians` (
   `_fighter_option` int(11) NOT NULL,
   `_magician` int(11) NOT NULL
@@ -349,6 +434,7 @@ CREATE TABLE `fighter_options_magicians` (
 -- Structure de la table `fighter_options_priests`
 --
 
+DROP TABLE IF EXISTS `fighter_options_priests`;
 CREATE TABLE `fighter_options_priests` (
   `_fighter_option` int(11) NOT NULL,
   `_priest` int(11) NOT NULL
@@ -360,6 +446,7 @@ CREATE TABLE `fighter_options_priests` (
 -- Structure de la table `fighter_options_ranged_weapons`
 --
 
+DROP TABLE IF EXISTS `fighter_options_ranged_weapons`;
 CREATE TABLE `fighter_options_ranged_weapons` (
   `_fighter_option` int(11) NOT NULL,
   `_ranged_weapon` int(11) NOT NULL
@@ -371,6 +458,7 @@ CREATE TABLE `fighter_options_ranged_weapons` (
 -- Structure de la table `fighter_options_skills`
 --
 
+DROP TABLE IF EXISTS `fighter_options_skills`;
 CREATE TABLE `fighter_options_skills` (
   `_fighter_option` int(11) NOT NULL,
   `_skill` int(11) NOT NULL,
@@ -383,6 +471,7 @@ CREATE TABLE `fighter_options_skills` (
 -- Structure de la table `fighter_option_groups`
 --
 
+DROP TABLE IF EXISTS `fighter_option_groups`;
 CREATE TABLE `fighter_option_groups` (
   `id` int(11) NOT NULL,
   `_card_fighter` int(11) NOT NULL,
@@ -395,6 +484,7 @@ CREATE TABLE `fighter_option_groups` (
 -- Structure de la table `games`
 --
 
+DROP TABLE IF EXISTS `games`;
 CREATE TABLE `games` (
   `id` int(11) NOT NULL,
   `_tournament` int(11) NOT NULL,
@@ -409,9 +499,18 @@ CREATE TABLE `games` (
 -- Structure de la table `genders`
 --
 
+DROP TABLE IF EXISTS `genders`;
 CREATE TABLE `genders` (
   `_label` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Genre des figurines (mâle/femelle/selon la figurine)';
+
+--
+-- Déchargement des données de la table `genders`
+--
+
+INSERT INTO `genders` (`_label`) VALUES
+(37),
+(38);
 
 -- --------------------------------------------------------
 
@@ -419,9 +518,96 @@ CREATE TABLE `genders` (
 -- Structure de la table `labels`
 --
 
+DROP TABLE IF EXISTS `labels`;
 CREATE TABLE `labels` (
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Table d''index des libellés';
+
+--
+-- Déchargement des données de la table `labels`
+--
+
+INSERT INTO `labels` (`id`) VALUES
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10),
+(11),
+(12),
+(13),
+(14),
+(15),
+(16),
+(17),
+(18),
+(19),
+(20),
+(21),
+(22),
+(23),
+(24),
+(25),
+(26),
+(28),
+(29),
+(30),
+(31),
+(32),
+(33),
+(34),
+(35),
+(37),
+(38),
+(39),
+(40),
+(41),
+(42),
+(43),
+(44),
+(45),
+(46),
+(47),
+(48),
+(49),
+(50),
+(51),
+(52),
+(53),
+(54),
+(55),
+(56),
+(57),
+(58),
+(59),
+(60),
+(61),
+(62),
+(63),
+(64),
+(65),
+(66),
+(67),
+(68),
+(69),
+(70),
+(71),
+(72),
+(73),
+(74),
+(75),
+(76),
+(77),
+(78),
+(79),
+(80),
+(81),
+(82);
 
 -- --------------------------------------------------------
 
@@ -429,11 +615,178 @@ CREATE TABLE `labels` (
 -- Structure de la table `labels_languages`
 --
 
+DROP TABLE IF EXISTS `labels_languages`;
 CREATE TABLE `labels_languages` (
   `_label` int(11) NOT NULL,
   `_language` int(11) NOT NULL,
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Libellés par langue';
+
+--
+-- Déchargement des données de la table `labels_languages`
+--
+
+INSERT INTO `labels_languages` (`_label`, `_language`, `text`) VALUES
+(1, 1, 'mouvement'),
+(1, 2, 'movement'),
+(2, 1, 'initiative'),
+(2, 2, 'initiative'),
+(3, 1, 'attaque'),
+(3, 2, 'attack'),
+(4, 1, 'force'),
+(4, 2, 'strength'),
+(5, 1, 'défense'),
+(5, 2, 'defense'),
+(6, 1, 'résistance'),
+(6, 2, 'resistance'),
+(7, 1, 'courage'),
+(7, 2, 'courage'),
+(8, 1, 'peur'),
+(8, 2, 'fear'),
+(9, 1, 'discipline'),
+(9, 2, 'discipline'),
+(10, 1, 'irrégulier'),
+(10, 2, 'irregular'),
+(11, 1, 'régulier'),
+(11, 2, 'régular'),
+(12, 1, 'vétéran'),
+(12, 2, 'veteran'),
+(13, 1, 'créature'),
+(13, 2, 'creature'),
+(14, 1, 'spécial'),
+(14, 2, 'special'),
+(15, 1, 'élite'),
+(15, 2, 'elit'),
+(16, 1, 'machine de guerre'),
+(16, 2, 'warmachine'),
+(17, 1, 'légende vivante'),
+(17, 2, 'living legend'),
+(18, 1, 'allié majeur'),
+(18, 2, 'major ally'),
+(19, 1, 'initié'),
+(19, 2, 'initiate'),
+(20, 1, 'adepte'),
+(20, 2, 'adept'),
+(21, 1, 'maître'),
+(21, 2, 'master'),
+(22, 1, 'virtuose'),
+(22, 2, 'virtuoso'),
+(23, 1, 'dévot'),
+(23, 2, 'devout'),
+(24, 1, 'zélote'),
+(24, 2, 'zealot'),
+(25, 1, 'doyen'),
+(25, 2, 'doyen'),
+(26, 1, 'avatar'),
+(26, 2, 'avatar'),
+(28, 1, 'petite taille'),
+(28, 2, 'small'),
+(29, 1, 'taille normale'),
+(29, 2, 'medium'),
+(30, 1, 'grande taille'),
+(30, 2, 'big'),
+(31, 1, 'très grande taille'),
+(31, 2, 'huge'),
+(32, 1, 'infanterie'),
+(32, 2, 'infantry'),
+(33, 1, 'cavalerie'),
+(33, 2, 'cavalry'),
+(34, 1, 'grande taille'),
+(34, 2, 'big'),
+(35, 1, 'creature'),
+(35, 2, 'creature'),
+(37, 1, 'masculin'),
+(37, 2, 'male'),
+(38, 1, 'féminin'),
+(38, 2, 'female'),
+(39, 1, 'voie de la lumière'),
+(39, 2, 'light'),
+(40, 1, 'voie du destin'),
+(40, 2, 'destiny'),
+(41, 1, 'voie des ténèbres'),
+(41, 2, 'darkness'),
+(42, 1, 'Cadwallon'),
+(42, 2, 'Cadwallon'),
+(43, 1, 'élémentaires'),
+(43, 2, 'elementals'),
+(44, 1, 'morts-vivants d\'Achéron'),
+(44, 2, 'undeads'),
+(45, 1, 'alchimistes de Dirz'),
+(45, 2, 'dirz'),
+(46, 1, 'keltois du clan des Drunes'),
+(46, 2, 'drunes'),
+(47, 1, 'nains de Mid-Nor'),
+(47, 2, 'mid-nor'),
+(48, 1, 'alliance Ophidienne'),
+(48, 2, 'ophidians'),
+(49, 1, 'elfes Akkyshans'),
+(49, 2, 'akkyshans'),
+(50, 1, 'dévoreurs de Vile-Tis'),
+(50, 2, 'devourers'),
+(51, 1, 'horde de Dun-Scaîth'),
+(51, 2, 'dun-scaith'),
+(52, 1, 'lions d\'Alahan'),
+(52, 2, 'lion'),
+(53, 1, 'elfes Cynwäll'),
+(53, 2, 'cynwalls'),
+(54, 1, 'griffons d\'Akkylannie'),
+(54, 2, 'griffins'),
+(55, 1, 'keltois du clan des Sessairs'),
+(55, 2, 'sessairs'),
+(56, 1, 'nains de Tir-Na-Bor'),
+(56, 2, 'tir-na-bor'),
+(57, 1, 'utopie du Sphinx'),
+(57, 2, 'sphinx'),
+(58, 1, 'elfes Daïkinees'),
+(58, 2, 'daikinees'),
+(59, 1, 'orques de Bran-Ô-Kor'),
+(59, 2, 'orks of Bran-O-Kor'),
+(60, 1, 'wolfens d\'Yllia'),
+(60, 2, 'wolfen'),
+(61, 1, 'gobelins de No-Dan-Kar'),
+(61, 2, 'goblins'),
+(62, 1, 'orques du Béhémoth'),
+(62, 2, 'orks of Behemoth'),
+(63, 1, 'concorde de l\'Aigle'),
+(63, 2, 'concordia'),
+(64, 1, 'milice de Cadwallon'),
+(64, 2, 'cadwallon milice'),
+(65, 1, 'fiefs Ogrokh'),
+(65, 2, 'ogrokh'),
+(66, 1, 'guilde des Architectes'),
+(66, 2, 'architects guild'),
+(67, 1, 'guilde des Nochers'),
+(67, 2, 'nochers guild'),
+(68, 1, 'guilde des Usuriers'),
+(68, 2, 'usury guild'),
+(69, 1, 'guilde des Voleurs'),
+(69, 2, 'thieves guild'),
+(70, 1, 'guilde des Lames'),
+(70, 2, 'blades guild'),
+(71, 1, 'guilde des Cartomanciens'),
+(71, 2, 'cartomanciers guild'),
+(72, 1, 'guilde des Orfèvres'),
+(72, 2, 'orfevres guild'),
+(73, 1, 'élémentaires de Feu'),
+(73, 2, 'fire'),
+(74, 1, 'élémentaires d\'Eau'),
+(74, 2, 'water'),
+(75, 1, 'élémentaires de Terre'),
+(75, 2, 'earth'),
+(76, 1, 'élémentaires d\'Air'),
+(76, 2, 'air'),
+(77, 1, 'élémentaires de Lumière'),
+(77, 2, 'light'),
+(78, 1, 'élémentaires de Ténèbres'),
+(78, 2, 'darkness'),
+(79, 1, 'mercenaires'),
+(79, 2, 'mercenaries'),
+(80, 1, 'autres'),
+(80, 2, 'others'),
+(81, 1, 'dur à cuire'),
+(81, 2, 'hard boiled'),
+(82, 1, 'les jets de blessures subis par le combattant sont lus une ligne plus haut'),
+(82, 2, 'damage rolls are read one line hightr');
 
 -- --------------------------------------------------------
 
@@ -441,12 +794,21 @@ CREATE TABLE `labels_languages` (
 -- Structure de la table `languages`
 --
 
+DROP TABLE IF EXISTS `languages`;
 CREATE TABLE `languages` (
   `id` int(11) NOT NULL,
-  `code` text NOT NULL,
-  `name` text NOT NULL,
+  `code` varchar(2) NOT NULL,
+  `name` varchar(32) NOT NULL,
   `flag_icon` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Langues d''affichage des textes';
+
+--
+-- Déchargement des données de la table `languages`
+--
+
+INSERT INTO `languages` (`id`, `code`, `name`, `flag_icon`) VALUES
+(1, 'FR', 'français', 'fr.jpg'),
+(2, 'EN', 'english', 'en.jpg');
 
 -- --------------------------------------------------------
 
@@ -454,6 +816,7 @@ CREATE TABLE `languages` (
 -- Structure de la table `magicians`
 --
 
+DROP TABLE IF EXISTS `magicians`;
 CREATE TABLE `magicians` (
   `id` int(11) NOT NULL,
   `power` int(11) DEFAULT NULL,
@@ -468,6 +831,7 @@ CREATE TABLE `magicians` (
 -- Structure de la table `magicians_elements`
 --
 
+DROP TABLE IF EXISTS `magicians_elements`;
 CREATE TABLE `magicians_elements` (
   `_magician` int(11) NOT NULL,
   `_magic_element` int(11) NOT NULL
@@ -479,6 +843,7 @@ CREATE TABLE `magicians_elements` (
 -- Structure de la table `magicians_ways`
 --
 
+DROP TABLE IF EXISTS `magicians_ways`;
 CREATE TABLE `magicians_ways` (
   `_magician` int(11) NOT NULL,
   `_magic_way` int(11) NOT NULL
@@ -490,6 +855,7 @@ CREATE TABLE `magicians_ways` (
 -- Structure de la table `magic_elements`
 --
 
+DROP TABLE IF EXISTS `magic_elements`;
 CREATE TABLE `magic_elements` (
   `id` int(11) NOT NULL,
   `_label` int(11) NOT NULL,
@@ -502,6 +868,7 @@ CREATE TABLE `magic_elements` (
 -- Structure de la table `magic_spells_mana_costs`
 --
 
+DROP TABLE IF EXISTS `magic_spells_mana_costs`;
 CREATE TABLE `magic_spells_mana_costs` (
   `_magic_spell` int(11) NOT NULL,
   `_magic_element` int(11) NOT NULL,
@@ -514,6 +881,7 @@ CREATE TABLE `magic_spells_mana_costs` (
 -- Structure de la table `magic_spells_ways`
 --
 
+DROP TABLE IF EXISTS `magic_spells_ways`;
 CREATE TABLE `magic_spells_ways` (
   `_magic_spell` int(11) NOT NULL,
   `_magic_way` int(11) NOT NULL
@@ -525,6 +893,7 @@ CREATE TABLE `magic_spells_ways` (
 -- Structure de la table `magic_ways`
 --
 
+DROP TABLE IF EXISTS `magic_ways`;
 CREATE TABLE `magic_ways` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
@@ -536,6 +905,7 @@ CREATE TABLE `magic_ways` (
 -- Structure de la table `miracle_ways`
 --
 
+DROP TABLE IF EXISTS `miracle_ways`;
 CREATE TABLE `miracle_ways` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
@@ -547,10 +917,21 @@ CREATE TABLE `miracle_ways` (
 -- Structure de la table `pedestals`
 --
 
+DROP TABLE IF EXISTS `pedestals`;
 CREATE TABLE `pedestals` (
   `_label` int(11) NOT NULL,
   `dimensions` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `pedestals`
+--
+
+INSERT INTO `pedestals` (`_label`, `dimensions`) VALUES
+(32, '2.5 x 2.5cm'),
+(33, '2.5 x 5cm'),
+(34, '3.75 x 3.75cm'),
+(35, '5 x 5cm');
 
 -- --------------------------------------------------------
 
@@ -558,9 +939,10 @@ CREATE TABLE `pedestals` (
 -- Structure de la table `players`
 --
 
+DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL,
+  `name` varchar(50) NOT NULL,
   `_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Joueurs (pas forcément liés à un compte)';
 
@@ -570,6 +952,7 @@ CREATE TABLE `players` (
 -- Structure de la table `players_games`
 --
 
+DROP TABLE IF EXISTS `players_games`;
 CREATE TABLE `players_games` (
   `_player` int(11) NOT NULL,
   `_game` int(11) NOT NULL,
@@ -584,6 +967,7 @@ CREATE TABLE `players_games` (
 -- Structure de la table `points`
 --
 
+DROP TABLE IF EXISTS `points`;
 CREATE TABLE `points` (
   `id` int(11) NOT NULL,
   `fix_points` int(11) NOT NULL,
@@ -596,6 +980,7 @@ CREATE TABLE `points` (
 -- Structure de la table `priests`
 --
 
+DROP TABLE IF EXISTS `priests`;
 CREATE TABLE `priests` (
   `id` int(11) NOT NULL,
   `creation` int(11) NOT NULL,
@@ -611,6 +996,7 @@ CREATE TABLE `priests` (
 -- Structure de la table `priests_miracle_ways`
 --
 
+DROP TABLE IF EXISTS `priests_miracle_ways`;
 CREATE TABLE `priests_miracle_ways` (
   `_priest` int(11) NOT NULL,
   `_miracle_way` int(11) NOT NULL
@@ -622,6 +1008,7 @@ CREATE TABLE `priests_miracle_ways` (
 -- Structure de la table `races`
 --
 
+DROP TABLE IF EXISTS `races`;
 CREATE TABLE `races` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
@@ -633,6 +1020,7 @@ CREATE TABLE `races` (
 -- Structure de la table `ranged_weapons`
 --
 
+DROP TABLE IF EXISTS `ranged_weapons`;
 CREATE TABLE `ranged_weapons` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL,
@@ -652,10 +1040,34 @@ CREATE TABLE `ranged_weapons` (
 -- Structure de la table `ranks`
 --
 
+DROP TABLE IF EXISTS `ranks`;
 CREATE TABLE `ranks` (
   `_label` int(11) NOT NULL,
   `level` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Rangs des profils (special, élite, vétéran, ...)';
+
+--
+-- Déchargement des données de la table `ranks`
+--
+
+INSERT INTO `ranks` (`_label`, `level`) VALUES
+(10, 1),
+(11, 1),
+(12, 1),
+(13, 1),
+(14, 2),
+(15, 2),
+(16, 2),
+(17, 3),
+(18, 4),
+(19, 1),
+(20, 2),
+(21, 3),
+(22, 4),
+(23, 1),
+(24, 2),
+(25, 3),
+(26, 4);
 
 -- --------------------------------------------------------
 
@@ -663,6 +1075,7 @@ CREATE TABLE `ranks` (
 -- Structure de la table `scenarios`
 --
 
+DROP TABLE IF EXISTS `scenarios`;
 CREATE TABLE `scenarios` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL,
@@ -675,10 +1088,21 @@ CREATE TABLE `scenarios` (
 -- Structure de la table `sizes`
 --
 
+DROP TABLE IF EXISTS `sizes`;
 CREATE TABLE `sizes` (
   `_label` int(11) NOT NULL,
   `potency` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Tailles des figurines (cavalier, grande taille, 2.5x5cm)';
+
+--
+-- Déchargement des données de la table `sizes`
+--
+
+INSERT INTO `sizes` (`_label`, `potency`) VALUES
+(28, 1),
+(29, 1),
+(30, 2),
+(31, 3);
 
 -- --------------------------------------------------------
 
@@ -686,10 +1110,26 @@ CREATE TABLE `sizes` (
 -- Structure de la table `skills`
 --
 
+DROP TABLE IF EXISTS `skills`;
 CREATE TABLE `skills` (
   `id` int(11) NOT NULL,
   `_name` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Caractéristiques (MOU, FOR, ...)';
+
+--
+-- Déchargement des données de la table `skills`
+--
+
+INSERT INTO `skills` (`id`, `_name`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9);
 
 -- --------------------------------------------------------
 
@@ -697,6 +1137,7 @@ CREATE TABLE `skills` (
 -- Structure de la table `tournaments`
 --
 
+DROP TABLE IF EXISTS `tournaments`;
 CREATE TABLE `tournaments` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -709,6 +1150,7 @@ CREATE TABLE `tournaments` (
 -- Structure de la table `usergroups`
 --
 
+DROP TABLE IF EXISTS `usergroups`;
 CREATE TABLE `usergroups` (
   `id` int(11) NOT NULL,
   `_label` int(11) NOT NULL
@@ -720,11 +1162,12 @@ CREATE TABLE `usergroups` (
 -- Structure de la table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `login` text NOT NULL,
+  `login` varchar(50) NOT NULL,
   `password` text NOT NULL,
-  `email` text NOT NULL,
+  `email` varchar(100) NOT NULL,
   `_language` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Utilisateurs du site web';
 
@@ -734,6 +1177,7 @@ CREATE TABLE `users` (
 -- Structure de la table `users_usergroups`
 --
 
+DROP TABLE IF EXISTS `users_usergroups`;
 CREATE TABLE `users_usergroups` (
   `_user` int(11) NOT NULL,
   `_usergroup` int(11) NOT NULL
@@ -1007,9 +1451,8 @@ ALTER TABLE `labels_languages`
 --
 ALTER TABLE `languages`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `code` (`code`) USING HASH,
-  ADD UNIQUE KEY `name` (`name`) USING HASH,
-  ADD UNIQUE KEY `flag_icon` (`flag_icon`) USING HASH;
+  ADD UNIQUE KEY `code` (`code`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Index pour la table `magicians`
@@ -1078,7 +1521,7 @@ ALTER TABLE `pedestals`
 --
 ALTER TABLE `players`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`) USING HASH,
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `player_user` (`_user`);
 
 --
@@ -1171,8 +1614,8 @@ ALTER TABLE `usergroups`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`) USING HASH,
-  ADD UNIQUE KEY `login` (`login`) USING HASH,
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `login` (`login`),
   ADD KEY `user_language` (`_language`);
 
 --

@@ -56,6 +56,7 @@ class FighterChampion extends Fighter{
 
     public function toJson(){
         $json = parent::toJson();
+        $json['is_champion'] = true;
         $json['champion'] = $this->getChampion() != null ? $this->getChampion()->toJson() : null;
         $json['incarnation'] = $this->getIncarnation();
         return $json;

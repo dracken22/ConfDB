@@ -29,6 +29,7 @@ class FighterTroop extends Fighter{
 
     public function toJson(){
         $json = parent::toJson();
+        $json['is_champion'] = false;
         $json['max_quantity'] = $this->getMaxQuantity();
         return $json;
     }

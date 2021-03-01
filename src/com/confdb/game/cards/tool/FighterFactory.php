@@ -9,9 +9,12 @@ use com\confdb\game\basics\bean\Rank;
 use com\confdb\game\basics\bean\Size;
 use com\confdb\game\basics\bean\Skill;
 use com\confdb\game\basics\dao\GenderDao;
+use com\confdb\game\cards\bean\Champion;
 use com\confdb\game\cards\bean\Fighter;
 use com\confdb\game\cards\bean\FighterAbility;
+use com\confdb\game\cards\bean\FighterChampion;
 use com\confdb\game\cards\bean\FighterSkill;
+use com\confdb\game\cards\bean\FighterTroop;
 use com\confdb\game\options\bean\OptionGroup;
 use com\confdb\label\bean\Label;
 
@@ -23,9 +26,17 @@ class FighterFactory extends AFactory{
                 $fighter = $fighters[$result['_card']];
             }
             else{
-                $fighters[$result['_card']] = $fighter = new Fighter($result['_card']);
+                if(isset($result['_champion'])){
+                    $fighter = new FighterChampion($result['_card']);
+                    $fighter->setChampion(new Champion($result['_champion']));
+                    $fighter->setIncarnation($result['incarnation']);
+                }
+                else {
+                    $fighter = new FighterTroop($result['_card']);
+                    $fighter->setMaxQuantity($result['quantity_max']);
+                }
+                $fighters[$result['_card']] = $fighter;
             }
-            $fighter = new Fighter();
             
             $fighter->setName(new Label($result['_name']));
             $fighter->setArmy(new Army($result['_army']));

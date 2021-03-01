@@ -3,19 +3,11 @@ namespace com\confdb\game\cards\dao;
 
 use com\confdb\base\dao\ADao;
 use com\confdb\base\tool\SqlTool;
-use com\confdb\game\cards\tool\FighterChampionFactory;
 use com\confdb\game\cards\tool\FighterFactory;
-use com\confdb\game\cards\tool\FighterTroopFactory;
 
 class FighterDao extends ADao{
     protected function getFactory(){
         return FighterFactory::getInstance();
-    }
-    protected function getTroopFactory(){
-        return FighterTroopFactory::getInstance();
-    }
-    protected function getChampionFactory(){
-        return FighterChampionFactory::getInstance();
     }
 
     public function createTroop($names, $images, $army_id, $rank_id, $size_id, $pedestal_id, $gender_id, $fixedPoint, $calculFormula, $maxQuantity){
@@ -83,83 +75,43 @@ class FighterDao extends ADao{
         return SqlTool::insert('INSERT INTO champions(_name) VALUES(?)', [$name_id], $connectionNumber);
     }
 
-    private function readTroop($fighter_id){
-        return $this->_getById('SELECT * FROM card_fighter_troops WHERE _card_fighter = ?', [$fighter_id], $this->getTroopFactory());
-    }
-    private function readChampion($fighter_id, $notSureIfExists = false){
-        $query = 'SELECT * FROM card_fighter_champions 
-                    JOIN champions ON _champion = _id
-                    JOIN labels_languages ON _label = _name
-                    WHERE _card_fighter = ?';
-        if($notSureIfExists){
-            $results = $this->_get($query, [$fighter_id], $this->getChampionFactory());
-            if(is_array($results) && sizeof($results) == 1){
-                $results = $results[array_keys($results)[0]];
-            }
-            else {
-                $results = null;
-            }
-        }
-        else{
-            $results = $this->_getById($query, [$fighter_id], $this->getChampionFactory());
-        }
-        return $results;
-    }
-
-    private function readTroopOrChampion($fighter_id){
-        // Si on ne sait pas si on a affaire à un champion ou une troupe
-        $cardFighter = $this->readChampion($fighter_id, true);
-        if($cardFighter == null){
-            $cardFighter = $this->readTroop($fighter_id);
-        }
-        return $cardFighter;
+    private function getBaseQuery(){
+        return 'SELECT
+                    cards.*, 
+                    card_fighters.*,
+                    points.*,
+                    card_fighter_troops.*,
+                    CONCAT("{", GROUP_CONCAT(CONCAT(card_fighters_skills._skill ,":",card_fighters_skills.value), ","),"}") AS skills,
+                    CONCAT("{", GROUP_CONCAT(CONCAT(labels_languages._language ,":",labels_languages.text), ","),"}") AS names,
+                    CONCAT("{", GROUP_CONCAT(CONCAT(card_fighters_abilities._ability ,":",card_fighters_abilities.value), ","),"}") AS abilities,
+                    CONCAT("[", GROUP_CONCAT(card_fighters_classes._class, ","),"]") AS classes,
+                    CONCAT("[", GROUP_CONCAT(card_images.image, ","),"]") AS images,
+                    CONCAT("[", GROUP_CONCAT(fighter_option_groups.id, ","),"]") AS option_groups
+                FROM cards
+                JOIN card_fighters ON card_fighters._card = cards.id 
+                JOIN points ON points.id = card_fighters._point 
+                JOIN labels_languages ON _label = cards._name
+                LEFT OUTER JOIN card_fighter_troops ON card_fighter_troops._card_fighter = card_fighters._card
+                LEFT OUTER JOIN card_fighter_champions ON card_fighter_champions._card_fighter = card_fighters._card
+                JOIN card_fighters_skills ON card_fighters_skills._card_fighter = card_fighters._card 
+                LEFT OUTER JOIN card_images ON card_images._card = cards.id
+                LEFT OUTER JOIN card_fighters_ranged_weapons ON card_fighters_ranged_weapons._card_fighter = card_fighters._card
+                LEFT OUTER JOIN card_fighters_abilities ON card_fighters_abilities._card_fighter = card_fighters._card
+                LEFT OUTER JOIN card_fighters_classes ON card_fighters_classes._card_fighter = card_fighters._card
+                LEFT OUTER JOIN fighter_option_groups ON fighter_option_groups._card_fighter = card_fighters._card ';
     }
 
-    public function readFighter($fighter_id){
-        $fighter = $this->_getById('SELECT
-                                    cards.*, 
-                                    card_fighters.*,
-                                    points.*,
-                                    CONCAT("{", GROUP_CONCAT(CONCAT(card_fighters_skills._skill ,":",card_fighters_skills.value), ","),"}") AS skills,
-                                    CONCAT("{", GROUP_CONCAT(CONCAT(labels_languages._language ,":",labels_languages.text), ","),"}") AS names,
-                                    CONCAT("{", GROUP_CONCAT(CONCAT(card_fighters_abilities._ability ,":",card_fighters_abilities.value), ","),"}") AS abilities,
-                                    CONCAT("[", GROUP_CONCAT(card_fighters_classes._class, ","),"]") AS classes,
-                                    CONCAT("[", GROUP_CONCAT(card_images.image, ","),"]") AS images,
-                                    CONCAT("[", GROUP_CONCAT(fighter_option_groups.id, ","),"]") AS option_groups
-                                FROM cards
-                                JOIN card_fighters ON _card = cards.id 
-                                JOIN points ON points.id = card_fighters._point 
-                                JOIN labels_languages ON _label = cards._name
-                                JOIN card_fighters_skills ON card_fighters_skills._card_fighter = cards.id 
-                                LEFT OUTER JOIN card_images ON card_images._card = cards.id
-                                LEFT OUTER JOIN card_fighters_abilities ON card_fighters_abilities._card_fighter = cards.id
-                                LEFT OUTER JOIN card_fighters_classes ON card_fighters_classes._card_fighter = cards.id
-                                LEFT OUTER JOIN fighter_option_groups ON fighter_option_groups._card_fighter = cards.id
+    public function read($fighter_id){
+        return $this->_getById($this->getBaseQuery() . '
                                 WHERE id = ?
                                 GROUP BY cards.id', [$fighter_id]);
-        // A RAJOUTER POUR UN CHARGEMENT ULTERIEUR : magician, priest, ranged_weapons, options
+        // A RAJOUTER POUR UN CHARGEMENT ULTERIEUR : magician, priest, ranged_weapons, options, champion
     }
 
-    public function read($fighter_id, $is_champion = null){
-        $cardFighter = null;
-        if(isset($is_champion)){
-            if($is_champion){
-                $cardFighter = $this->readChampion($fighter_id);
-            }
-            else{
-                $cardFighter = $this->readTroop($fighter_id);
-            }
-        }
-        else{
-            $cardFighter = $this->readTroopOrChampion($fighter_id);
-        }
-
-        // TODO : lire les infos génériques de combattant : caracs, comps, armes, genre, race, etc
-        return $cardFighter;
-    }
-
-    public function listByArmy(){
-        // TODO
-        return $this->_get('SELECT * FROM card_fighters JOIN cards ON _card = id');
+    public function listByArmy($army_id){
+        return $this->_get($this->getBaseQuery() . '
+                                WHERE _army = ?
+                                GROUP BY cards.id', [$army_id]);
+        // A RAJOUTER POUR UN CHARGEMENT ULTERIEUR : magician, priest, ranged_weapons, options, champion
     }
 }

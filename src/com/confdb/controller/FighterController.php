@@ -21,7 +21,7 @@ class FighterController extends AController{
                 $response['fighters'] = $this->getBusiness()->listByArmy($this->getMandatoryParam('army_id'));
                 break;
             case 'read' :
-                $response['ability'] = $this->getBusiness()->read($this->getMandatoryParam('fighter_id'), $this->getParam('is_champion'));
+                $response['ability'] = $this->getBusiness()->read($this->getMandatoryParam('fighter_id'));
                 break;
             case 'create' :
                 $names = $this->getMandatoryParam('names');
